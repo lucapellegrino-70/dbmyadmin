@@ -14,6 +14,6 @@
     <php>
         <env name="DB_CONNECTION" value="sqlite"/>
         <env name="DB_DATABASE" value=":memory:"/>
-        <env name="APP_KEY" value="base64:2fl+Ktvkfl+Ktvkfl+Ktvkfl+Ktvkfl+Ktvkfl+Ktv="/>
+        <env name="APP_KEY" value="base64:lihT9So76LmK48TcfdVqtet2fxYy3d2YSQLYZTfX69k="/>
     </php>
 </phpunit>
