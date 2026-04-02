@@ -69,6 +69,6 @@ class DbMyAdminPlugin implements Plugin
             return true;
         }
 
-        return (bool) call_user_func($this->authorizationCallback);
+        return (bool) ($this->authorizationCallback)(auth()->user());
     }
 }
