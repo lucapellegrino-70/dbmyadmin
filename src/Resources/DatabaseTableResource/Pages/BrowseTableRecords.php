@@ -24,7 +24,7 @@ class BrowseTableRecords extends Page implements HasTable
 
     protected static string $resource = DatabaseTableResource::class;
 
-    protected static string $view = 'dbmyadmin::pages.browse-table-records';
+    protected string $view = 'dbmyadmin::pages.browse-table-records';
 
     // ── Candidates for "label" column in related FK tables ────────────────────
     protected array $labelColumnCandidates = [

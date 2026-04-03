@@ -14,7 +14,7 @@ class AlterTable extends Page
 {
     protected static string $resource = DatabaseTableResource::class;
 
-    protected static string $view = 'dbmyadmin::pages.alter-table';
+    protected string $view = 'dbmyadmin::pages.alter-table';
 
     // ── Properties ────────────────────────────────────────────────────────────
 

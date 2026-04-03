@@ -13,7 +13,7 @@ class CreateTable extends Page
 {
     protected static string $resource = DatabaseTableResource::class;
 
-    protected static string $view = 'dbmyadmin::pages.create-table';
+    protected string $view = 'dbmyadmin::pages.create-table';
 
     // ── Livewire properties ───────────────────────────────────────────────────
 
