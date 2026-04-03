@@ -85,6 +85,26 @@ class DatabaseTableResource extends \Filament\Resources\Resource
         }
     }
 
+    protected static function disableForeignKeyChecks(): void
+    {
+        match (DB::getDriverName()) {
+            'mysql', 'mariadb' => DB::unprepared('SET FOREIGN_KEY_CHECKS=0'),
+            'pgsql'            => DB::unprepared('SET session_replication_role = replica'),
+            'sqlite'           => DB::unprepared('PRAGMA foreign_keys = OFF'),
+            default            => null,
+        };
+    }
+
+    protected static function enableForeignKeyChecks(): void
+    {
+        match (DB::getDriverName()) {
+            'mysql', 'mariadb' => DB::unprepared('SET FOREIGN_KEY_CHECKS=1'),
+            'pgsql'            => DB::unprepared('SET session_replication_role = DEFAULT'),
+            'sqlite'           => DB::unprepared('PRAGMA foreign_keys = ON'),
+            default            => null,
+        };
+    }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -162,7 +182,7 @@ class DatabaseTableResource extends \Filament\Resources\Resource
 
                         try {
                             static::rollbackFilamentTransaction();
-                            DB::unprepared("TRUNCATE TABLE `{$tableName}`");
+                            DB::table($tableName)->truncate();
                             DatabaseTable::clearCache();
 
                             Log::info('Tabella svuotata', [
@@ -202,9 +222,9 @@ class DatabaseTableResource extends \Filament\Resources\Resource
 
                         try {
                             static::rollbackFilamentTransaction();
-                            DB::unprepared('SET FOREIGN_KEY_CHECKS=0');
-                            DB::unprepared("TRUNCATE TABLE `{$tableName}`");
-                            DB::unprepared('SET FOREIGN_KEY_CHECKS=1');
+                            static::disableForeignKeyChecks();
+                            DB::table($tableName)->truncate();
+                            static::enableForeignKeyChecks();
                             DatabaseTable::clearCache();
 
                             Log::info('Tabella svuotata con FK disabilitate', [
@@ -219,7 +239,7 @@ class DatabaseTableResource extends \Filament\Resources\Resource
                                 ->send();
                         } catch (\Exception $e) {
                             try {
-                                DB::unprepared('SET FOREIGN_KEY_CHECKS=1');
+                                static::enableForeignKeyChecks();
                             } catch (\Throwable) {
                             }
 
@@ -253,7 +273,7 @@ class DatabaseTableResource extends \Filament\Resources\Resource
 
                         foreach ($records as $record) {
                             try {
-                                DB::unprepared("TRUNCATE TABLE `{$record->name}`");
+                                DB::table($record->name)->truncate();
                                 $success++;
 
                                 Log::info('Tabella svuotata (bulk)', [
@@ -290,14 +310,14 @@ class DatabaseTableResource extends \Filament\Resources\Resource
                     ->action(function (Collection $records) {
                         try {
                             static::rollbackFilamentTransaction();
-                            DB::unprepared('SET FOREIGN_KEY_CHECKS=0');
+                            static::disableForeignKeyChecks();
 
                             $success = 0;
                             $errors  = 0;
 
                             foreach ($records as $record) {
                                 try {
-                                    DB::unprepared("TRUNCATE TABLE `{$record->name}`");
+                                    DB::table($record->name)->truncate();
                                     $success++;
 
                                     Log::info('Tabella svuotata (bulk con FK disabilitate)', [
@@ -314,7 +334,7 @@ class DatabaseTableResource extends \Filament\Resources\Resource
                                 }
                             }
 
-                            DB::unprepared('SET FOREIGN_KEY_CHECKS=1');
+                            static::enableForeignKeyChecks();
                             DatabaseTable::clearCache();
 
                             Notification::make()
@@ -324,7 +344,7 @@ class DatabaseTableResource extends \Filament\Resources\Resource
                                 ->send();
                         } catch (\Exception $e) {
                             try {
-                                DB::unprepared('SET FOREIGN_KEY_CHECKS=1');
+                                static::enableForeignKeyChecks();
                             } catch (\Throwable) {
                             }
 
