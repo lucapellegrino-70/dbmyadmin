@@ -425,9 +425,15 @@ class CreateTable extends Page
 
     public function getBreadcrumbs(): array
     {
+        try {
+            $indexUrl = DatabaseTableResource::getUrl();
+        } catch (\Throwable) {
+            $indexUrl = '#';
+        }
+
         return [
-            DatabaseTableResource::getUrl() => 'Tabelle Database',
-            ''                              => 'Crea Nuova Tabella',
+            $indexUrl => 'Tabelle Database',
+            ''        => 'Crea Nuova Tabella',
         ];
     }
 }

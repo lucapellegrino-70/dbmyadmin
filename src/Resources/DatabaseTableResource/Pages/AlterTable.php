@@ -40,7 +40,7 @@ class AlterTable extends Page
         $driverColumns = app(DatabaseDriver::class)->getColumns($this->tableName);
 
         $this->columns = $driverColumns->map(function ($col) {
-            $type   = strtoupper($col['type']);
+            $type   = strtoupper($col['type'] ?? 'VARCHAR');
             $length = (string) ($col['length'] ?? '');
 
             return [
@@ -49,7 +49,7 @@ class AlterTable extends Page
                 'type'           => $type,
                 'length'         => $length,
                 'unsigned'       => false,
-                'nullable'       => (bool) $col['nullable'],
+                'nullable'       => (bool) ($col['nullable'] ?? false),
                 'default'        => (string) ($col['default'] ?? ''),
                 'auto_increment' => str_contains(strtolower((string) ($col['extra'] ?? '')), 'auto_increment'),
                 'comment'        => '',
@@ -347,10 +347,18 @@ class AlterTable extends Page
 
     public function getBreadcrumbs(): array
     {
+        try {
+            $indexUrl  = DatabaseTableResource::getUrl();
+            $browseUrl = DatabaseTableResource::getUrl('browse', ['record' => $this->tableName]);
+        } catch (\Throwable) {
+            $indexUrl  = '#';
+            $browseUrl = '#';
+        }
+
         return [
-            DatabaseTableResource::getUrl()                                                       => 'Tabelle Database',
-            DatabaseTableResource::getUrl('browse', ['record' => $this->tableName]) => $this->tableName,
-            ''                                                                                    => 'Modifica struttura',
+            $indexUrl  => 'Tabelle Database',
+            $browseUrl => $this->tableName,
+            ''         => 'Modifica struttura',
         ];
     }
 }

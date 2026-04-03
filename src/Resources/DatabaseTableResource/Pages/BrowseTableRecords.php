@@ -361,7 +361,7 @@ class BrowseTableRecords extends Page implements HasTable
         foreach ($this->tableColumns as $col) {
             $name     = $col['name'];
             $type     = strtolower($this->fullType($col));
-            $nullable = (bool) $col['nullable'];
+            $nullable = (bool) ($col['nullable'] ?? false);
 
             if ($name === $pk && $this->isAutoIncrement($name)) {
                 if ($isEdit) {
@@ -587,9 +587,15 @@ class BrowseTableRecords extends Page implements HasTable
 
     public function getBreadcrumbs(): array
     {
+        try {
+            $indexUrl = DatabaseTableResource::getUrl();
+        } catch (\Throwable) {
+            $indexUrl = '#';
+        }
+
         return [
-            DatabaseTableResource::getUrl() => 'Tabelle Database',
-            ''                              => "Sfoglia: {$this->tableName}",
+            $indexUrl => 'Tabelle Database',
+            ''        => "Sfoglia: {$this->tableName}",
         ];
     }
 
