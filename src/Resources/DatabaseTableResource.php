@@ -2,11 +2,11 @@
 
 namespace LucaPellegrino\DbMyAdmin\Resources;
 
+use Filament\Actions\Action;
+use Filament\Actions\BulkAction;
 use Filament\Forms;
 use Filament\Notifications\Notification;
 use Filament\Tables;
-use Filament\Tables\Actions\Action;
-use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
@@ -361,13 +361,13 @@ class DatabaseTableResource extends \Filament\Resources\Resource
                     }),
             ])
             ->headerActions([
-                Tables\Actions\Action::make('create_table')
+                Action::make('create_table')
                     ->label('Crea Tabella')
                     ->icon('heroicon-o-plus-circle')
                     ->color('success')
                     ->url(static::getUrl('create-table')),
 
-                Tables\Actions\Action::make('sql_runner')
+                Action::make('sql_runner')
                     ->label('Query SQL')
                     ->icon('heroicon-o-command-line')
                     ->color('gray')
