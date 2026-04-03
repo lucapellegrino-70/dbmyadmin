@@ -14,7 +14,7 @@ class SqlQueryRunner extends Page
 {
     protected static string $resource = DatabaseTableResource::class;
 
-    protected static string $view = 'dbmyadmin::pages.sql-query-runner';
+    protected string $view = 'dbmyadmin::pages.sql-query-runner';
 
     // ── Editor properties ─────────────────────────────────────────────────────
 
@@ -301,7 +301,7 @@ class SqlQueryRunner extends Page
 
     // ── Security ──────────────────────────────────────────────────────────────
 
-    protected function isBlockedStatement(string $sql): ?string
+    public function isBlockedStatement(string $sql): ?string
     {
         $blocked = config('dbmyadmin.query_runner.blocked_statements', [
             'DROP', 'TRUNCATE', 'ALTER', 'CREATE',
@@ -328,9 +328,15 @@ class SqlQueryRunner extends Page
 
     public function getBreadcrumbs(): array
     {
+        try {
+            $indexUrl = DatabaseTableResource::getUrl();
+        } catch (\Throwable) {
+            $indexUrl = '#';
+        }
+
         return [
-            DatabaseTableResource::getUrl() => 'Tabelle Database',
-            ''                              => 'Query SQL',
+            $indexUrl => 'Tabelle Database',
+            ''        => 'Query SQL',
         ];
     }
 }
