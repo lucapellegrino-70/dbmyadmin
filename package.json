@@ -1,0 +1,10 @@
+{
+  "name": "lucapellegrino/dbmyadmin",
+  "private": true,
+  "scripts": {
+    "build:css": "npx tailwindcss -i ./resources/css/dbmyadmin.css -o ./dist/dbmyadmin.css --minify"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.0"
+  }
+}
