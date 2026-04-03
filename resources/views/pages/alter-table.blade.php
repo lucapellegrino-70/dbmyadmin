@@ -302,7 +302,7 @@ $types = [
 
     {{-- AZIONI --}}
     <div class="flex items-center justify-between">
-        <a href="{{ \App\Filament\Resources\DatabaseTableResource::getUrl('browse', ['record' => $tableName]) }}"
+        <a href="{{ \LucaPellegrino\DbMyAdmin\Resources\DatabaseTableResource::getUrl('browse', ['record' => $tableName]) }}"
             class="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400">
             &larr; Torna ai record
         </a>
