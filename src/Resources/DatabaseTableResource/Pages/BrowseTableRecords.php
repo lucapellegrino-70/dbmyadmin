@@ -97,7 +97,7 @@ class BrowseTableRecords extends Page implements HasTable
     protected function getPrimaryKey(): string
     {
         foreach ($this->tableColumns as $col) {
-            if ($col['key'] === 'PRI') {
+            if (($col['key'] ?? '') === 'PRI') {
                 return $col['name'];
             }
         }
