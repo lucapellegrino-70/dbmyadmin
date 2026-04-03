@@ -2,6 +2,8 @@
 
 namespace LucaPellegrino\DbMyAdmin;
 
+use Filament\Support\Assets\Css;
+use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Support\ServiceProvider;
 use LucaPellegrino\DbMyAdmin\Contracts\DatabaseDriver;
 use LucaPellegrino\DbMyAdmin\Drivers\MySqlDriver;
@@ -33,6 +35,10 @@ class DbMyAdminServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        FilamentAsset::register([
+            Css::make('dbmyadmin-styles', __DIR__ . '/../dist/dbmyadmin.css'),
+        ], package: 'lucapellegrino/dbmyadmin');
+
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'dbmyadmin');
 
         if ($this->app->runningInConsole()) {
