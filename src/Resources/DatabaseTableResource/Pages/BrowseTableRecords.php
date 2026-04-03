@@ -263,7 +263,7 @@ class BrowseTableRecords extends Page implements HasTable
             ->query($this->buildQuery())
             ->columns($this->buildTableColumns())
             ->actions([
-                Tables\Actions\Action::make('edit_record')
+                Action::make('edit_record')
                     ->label('Modifica')
                     ->icon('heroicon-o-pencil-square')
                     ->color('warning')
@@ -280,7 +280,7 @@ class BrowseTableRecords extends Page implements HasTable
                         $this->performUpdate($original, $data);
                     }),
 
-                Tables\Actions\Action::make('delete_record')
+                Action::make('delete_record')
                     ->label('Elimina')
                     ->icon('heroicon-o-trash')
                     ->color('danger')
@@ -295,7 +295,7 @@ class BrowseTableRecords extends Page implements HasTable
                     )),
             ])
             ->headerActions([
-                Tables\Actions\Action::make('create_record')
+                Action::make('create_record')
                     ->label('Nuovo Record')
                     ->icon('heroicon-o-plus')
                     ->color('success')
