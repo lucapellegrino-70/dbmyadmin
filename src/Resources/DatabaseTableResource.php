@@ -156,12 +156,16 @@ class DatabaseTableResource extends \Filament\Resources\Resource
                     ->label('Sfoglia')
                     ->icon('heroicon-o-table-cells')
                     ->color('success')
+                    ->iconButton()
+                    ->tooltip('Sfoglia')
                     ->url(fn ($record) => static::getUrl('browse', ['record' => $record->name])),
 
                 Action::make('view_structure')
                     ->label('Struttura')
                     ->icon('heroicon-o-eye')
                     ->color('info')
+                    ->iconButton()
+                    ->tooltip('Struttura')
                     ->modalHeading(fn ($record) => 'Struttura: ' . $record->name)
                     ->modalContent(fn ($record) => view('dbmyadmin::table-structure', [
                         'columns' => static::getTableColumns($record->name),
@@ -173,6 +177,8 @@ class DatabaseTableResource extends \Filament\Resources\Resource
                     ->label('Svuota Tabella')
                     ->icon('heroicon-o-trash')
                     ->color('danger')
+                    ->iconButton()
+                    ->tooltip('Svuota tabella')
                     ->requiresConfirmation()
                     ->modalHeading('Conferma Svuotamento Tabella')
                     ->modalDescription(fn ($record) => "Sei sicuro di voler svuotare la tabella '{$record->name}'? Questa operazione eliminerà tutti i dati in modo permanente.")
@@ -213,6 +219,8 @@ class DatabaseTableResource extends \Filament\Resources\Resource
                     ->label('Svuota (disabilita FK)')
                     ->icon('heroicon-o-shield-exclamation')
                     ->color('warning')
+                    ->iconButton()
+                    ->tooltip('Svuota (disabilita FK)')
                     ->requiresConfirmation()
                     ->modalHeading('Conferma Svuotamento con Disabilitazione FK')
                     ->modalDescription(fn ($record) => "Sei sicuro di voler svuotare la tabella '{$record->name}' disabilitando temporaneamente i controlli sulle chiavi esterne? Questa operazione eliminerà tutti i dati in modo permanente.")

@@ -141,9 +141,9 @@ $types = [
                                 ])
                                 title="{{ $isDrop ? 'Annulla eliminazione' : 'Segna per eliminazione' }}">
                                 @if($isDrop)
-                                    <x-heroicon-o-arrow-uturn-left class="h-3.5 w-3.5"/>
+                                    <x-heroicon-o-arrow-uturn-left style="width:14px;height:14px" />
                                 @else
-                                    <x-heroicon-o-trash class="h-3.5 w-3.5"/>
+                                    <x-heroicon-o-trash style="width:14px;height:14px" />
                                 @endif
                             </button>
                         </td>
@@ -163,13 +163,13 @@ $types = [
             </div>
             <button wire:click="addNewColumn"
                 class="inline-flex items-center gap-1.5 rounded-lg bg-primary-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-primary-700">
-                <x-heroicon-o-plus class="h-3.5 w-3.5"/> Aggiungi colonna
+                <x-heroicon-o-plus style="width:14px;height:14px" /> Aggiungi colonna
             </button>
         </div>
 
         @if(empty($newColumns))
         <div class="flex items-center justify-center gap-2 py-8 text-xs text-gray-400 dark:text-gray-600">
-            <x-heroicon-o-plus-circle class="h-4 w-4"/>
+            <x-heroicon-o-plus-circle style="width:16px;height:16px" />
             Nessuna nuova colonna. Clicca "Aggiungi colonna" per iniziare.
         </div>
         @else
@@ -263,7 +263,7 @@ $types = [
                         <td class="px-2 py-1.5">
                             <button wire:click="removeNewColumn({{ $i }})"
                                 class="inline-flex items-center rounded px-1.5 py-1 text-red-400 hover:bg-red-50 hover:text-red-600">
-                                <x-heroicon-o-trash class="h-3.5 w-3.5"/>
+                                <x-heroicon-o-trash style="width:14px;height:14px" />
                             </button>
                         </td>
                     </tr>
@@ -279,7 +279,7 @@ $types = [
     <div class="rounded-xl border border-amber-200 bg-amber-50 shadow-sm dark:border-amber-800 dark:bg-amber-950/20">
         <div class="flex items-center justify-between border-b border-amber-200 px-4 py-3 dark:border-amber-800">
             <div class="flex items-center gap-2">
-                <x-heroicon-o-exclamation-triangle class="h-4 w-4 text-amber-500"/>
+                <x-heroicon-o-exclamation-triangle class="text-amber-500" style="width:16px;height:16px" />
                 <h2 class="text-sm font-semibold text-amber-700 dark:text-amber-400">Anteprima ALTER TABLE</h2>
             </div>
             <span class="text-xs text-amber-500">Verifica prima di applicare</span>
@@ -314,7 +314,7 @@ $types = [
                 'bg-gray-300 cursor-not-allowed dark:bg-gray-700' => !$generatedDdl || str_starts_with($generatedDdl, '--'),
             ])>
             <span wire:loading.remove wire:target="applyChanges">
-                <x-heroicon-o-check class="h-4 w-4 inline -mt-0.5"/> Applica modifiche
+                <x-heroicon-o-check class="inline -mt-0.5" style="width:16px;height:16px" /> Applica modifiche
             </span>
             <span wire:loading wire:target="applyChanges" class="flex items-center gap-2">
                 <svg class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">

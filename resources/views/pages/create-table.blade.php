@@ -74,7 +74,7 @@ $fkActions  = ['RESTRICT','CASCADE','SET NULL','SET DEFAULT','NO ACTION'];
             <h2 class="text-sm font-semibold text-gray-700 dark:text-gray-300">Struttura colonne</h2>
             <button wire:click="addColumn"
                 class="inline-flex items-center gap-1.5 rounded-lg bg-primary-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-primary-700">
-                <x-heroicon-o-plus class="h-3.5 w-3.5"/> Aggiungi colonna
+                <x-heroicon-o-plus style="width:14px;height:14px" /> Aggiungi colonna
             </button>
         </div>
 
@@ -197,7 +197,7 @@ $fkActions  = ['RESTRICT','CASCADE','SET NULL','SET DEFAULT','NO ACTION'];
                         <td class="px-2 py-1.5">
                             <button wire:click="removeColumn({{ $i }})"
                                 class="inline-flex items-center rounded px-1.5 py-1 text-red-400 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/20">
-                                <x-heroicon-o-trash class="h-3.5 w-3.5"/>
+                                <x-heroicon-o-trash style="width:14px;height:14px" />
                             </button>
                         </td>
                     </tr>
@@ -213,7 +213,7 @@ $fkActions  = ['RESTRICT','CASCADE','SET NULL','SET DEFAULT','NO ACTION'];
         <div class="border-t border-gray-100 px-4 py-2.5 dark:border-gray-800">
             <button wire:click="addColumn"
                 class="inline-flex items-center gap-1.5 text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-                <x-heroicon-o-plus-circle class="h-4 w-4"/> Aggiungi colonna
+                <x-heroicon-o-plus-circle style="width:16px;height:16px" /> Aggiungi colonna
             </button>
         </div>
     </div>
@@ -227,13 +227,13 @@ $fkActions  = ['RESTRICT','CASCADE','SET NULL','SET DEFAULT','NO ACTION'];
             </div>
             <button wire:click="addForeignKey"
                 class="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium text-white" style="background-color: #f59e0b;">
-                <x-heroicon-o-plus class="h-3.5 w-3.5"/> Aggiungi FK
+                <x-heroicon-o-plus style="width:14px;height:14px" /> Aggiungi FK
             </button>
         </div>
 
         @if(empty($foreignKeys))
         <div class="flex items-center justify-center gap-2 py-8 text-xs text-gray-400 dark:text-gray-600">
-            <x-heroicon-o-link class="h-4 w-4"/>
+            <x-heroicon-o-link style="width:16px;height:16px" />
             Nessuna foreign key. Clicca "Aggiungi FK" per iniziare.
         </div>
         @else
@@ -333,7 +333,7 @@ $fkActions  = ['RESTRICT','CASCADE','SET NULL','SET DEFAULT','NO ACTION'];
                         <td class="px-3 py-2">
                             <button wire:click="removeForeignKey({{ $i }})"
                                 class="inline-flex items-center rounded px-1.5 py-1 text-red-400 hover:bg-red-50 hover:text-red-600">
-                                <x-heroicon-o-trash class="h-3.5 w-3.5"/>
+                                <x-heroicon-o-trash style="width:14px;height:14px" />
                             </button>
                         </td>
                     </tr>
@@ -380,7 +380,7 @@ $fkActions  = ['RESTRICT','CASCADE','SET NULL','SET DEFAULT','NO ACTION'];
         <button wire:click="createTable" wire:loading.attr="disabled"
             class="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-6 py-2 text-sm font-semibold text-white shadow hover:bg-primary-700 disabled:opacity-60">
             <span wire:loading.remove wire:target="createTable">
-                <x-heroicon-o-table-cells class="h-4 w-4 inline -mt-0.5"/> Crea tabella
+                <x-heroicon-o-table-cells class="inline -mt-0.5" style="width:16px;height:16px" /> Crea tabella
             </span>
             <span wire:loading wire:target="createTable" class="flex items-center gap-2">
                 <svg class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">

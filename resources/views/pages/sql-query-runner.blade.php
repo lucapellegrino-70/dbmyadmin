@@ -100,7 +100,7 @@
 
         <button @click="sidebarOpen = !sidebarOpen"
             class="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-600 shadow-sm hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400">
-            <x-heroicon-o-bars-3 class="h-3.5 w-3.5"/> Schema
+            <x-heroicon-o-bars-3 style="width:14px;height:14px" /> Schema
         </button>
 
         <div class="flex flex-wrap gap-1.5">
@@ -133,18 +133,18 @@
             {{-- Salva query --}}
             <button wire:click="openSaveModal"
                 class="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-600 shadow-sm hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400">
-                <x-heroicon-o-bookmark class="h-3.5 w-3.5"/> Salva
+                <x-heroicon-o-bookmark style="width:14px;height:14px" /> Salva
             </button>
 
             <button wire:click="clearQuery"
                 class="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-600 shadow-sm hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400">
-                <x-heroicon-o-x-mark class="h-3.5 w-3.5"/> Pulisci
+                <x-heroicon-o-x-mark style="width:14px;height:14px" /> Pulisci
             </button>
 
             <button wire:click="runQuery" wire:loading.attr="disabled"
                 class="inline-flex items-center gap-1.5 rounded-lg bg-primary-600 px-4 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-primary-700 disabled:opacity-60">
                 <span wire:loading.remove wire:target="runQuery">
-                    <x-heroicon-o-play class="h-3.5 w-3.5 inline -mt-0.5"/> Esegui <span class="opacity-60 font-normal ml-1">Ctrl+↵</span>
+                    <x-heroicon-o-play class="inline -mt-0.5" style="width:14px;height:14px" /> Esegui <span class="opacity-60 font-normal ml-1">Ctrl+↵</span>
                 </span>
                 <span wire:loading wire:target="runQuery" class="flex items-center gap-1.5">
                     <svg class="h-3.5 w-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -192,10 +192,10 @@
         'bg-red-50 text-red-700 dark:bg-red-950/30 dark:text-red-400' => $errorMessage,
         'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400' => !$errorMessage])>
         @if($errorMessage)
-            <x-heroicon-o-exclamation-circle class="h-4 w-4 shrink-0"/>
+            <x-heroicon-o-exclamation-circle class="shrink-0" style="width:16px;height:16px" />
             <span class="font-mono">{{ $errorMessage }}</span>
         @else
-            <x-heroicon-o-check-circle class="h-4 w-4 shrink-0"/>
+            <x-heroicon-o-check-circle class="shrink-0" style="width:16px;height:16px" />
             <span>
                 @if($hasResults)
                     <strong>{{ number_format($totalRows) }}</strong> righe restituite
@@ -243,7 +243,7 @@
     </div>
     @elseif($hasResults && !$errorMessage && count($results) === 0)
     <div class="flex items-center justify-center rounded-xl border border-dashed border-gray-200 py-12 text-sm text-gray-400 dark:border-gray-700">
-        <x-heroicon-o-inbox class="mr-2 h-5 w-5"/> Nessun risultato
+        <x-heroicon-o-inbox class="mr-2" style="width:20px;height:20px" /> Nessun risultato
     </div>
     @endif
 
@@ -261,12 +261,12 @@
         <button @click="sidebarTab = 'schema'"
             :class="sidebarTab === 'schema' ? 'border-b-2 border-primary-500 text-primary-600 dark:text-primary-400' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400'"
             class="flex flex-1 items-center justify-center gap-1.5 px-3 py-2.5 text-xs font-medium transition-colors">
-            <x-heroicon-o-circle-stack class="h-3.5 w-3.5"/> Schema
+            <x-heroicon-o-circle-stack style="width:14px;height:14px" /> Schema
         </button>
         <button @click="sidebarTab = 'saved'"
             :class="sidebarTab === 'saved' ? 'border-b-2 border-primary-500 text-primary-600 dark:text-primary-400' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400'"
             class="flex flex-1 items-center justify-center gap-1.5 px-3 py-2.5 text-xs font-medium transition-colors">
-            <x-heroicon-o-bookmark class="h-3.5 w-3.5"/>
+            <x-heroicon-o-bookmark style="width:14px;height:14px" />
             Query salvate
             @if(count($savedQueries) > 0)
             <span class="rounded-full bg-primary-100 px-1.5 py-0.5 text-[10px] font-semibold text-primary-700 dark:bg-primary-900/40 dark:text-primary-400">
@@ -292,7 +292,7 @@
                     </button>
                     <button @click="insertAtCursor('{{ $table }}')"
                         class="flex flex-1 items-center gap-1.5 overflow-hidden py-1 pr-2 text-left">
-                        <x-heroicon-o-table-cells class="h-3.5 w-3.5 shrink-0 text-primary-500"/>
+                        <x-heroicon-o-table-cells class="shrink-0 text-primary-500" style="width:14px;height:14px" />
                         <span class="truncate font-medium text-gray-700 dark:text-gray-300">{{ $table }}</span>
                         <span class="ml-auto shrink-0 rounded bg-gray-100 px-1 text-[10px] text-gray-400 dark:bg-gray-800">{{ count($cols) }}</span>
                     </button>
@@ -321,7 +321,7 @@
         {{-- Ricerca --}}
         <div class="border-b border-gray-100 p-2 dark:border-gray-800">
             <div class="relative">
-                <x-heroicon-o-magnifying-glass class="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400"/>
+                <x-heroicon-o-magnifying-glass class="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" style="width:14px;height:14px" />
                 <input type="text" wire:model.live.debounce.300ms="searchQuery"
                     placeholder="Cerca per nome, descrizione, SQL…"
                     class="w-full rounded-lg border border-gray-200 bg-gray-50 py-1.5 pl-7 pr-3 text-xs focus:border-primary-400 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"/>
@@ -332,7 +332,7 @@
         <div class="flex-1 overflow-y-auto">
             @if(empty($savedQueries))
             <div class="flex flex-col items-center justify-center gap-2 py-10 text-xs text-gray-400 dark:text-gray-600">
-                <x-heroicon-o-bookmark class="h-6 w-6"/>
+                <x-heroicon-o-bookmark style="width:24px;height:24px" />
                 @if(!empty($searchQuery))
                     Nessuna query trovata
                 @else
@@ -354,26 +354,26 @@
                                 :title="preview ? 'Nascondi SQL' : 'Anteprima SQL'"
                                 :class="preview ? 'bg-amber-100 text-amber-600 dark:bg-amber-950/30 dark:text-amber-400' : 'text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'"
                                 class="rounded p-1 transition-colors">
-                                <x-heroicon-o-eye class="h-3.5 w-3.5"/>
+                                <x-heroicon-o-eye style="width:14px;height:14px" />
                             </button>
                             {{-- Copia nell'editor --}}
                             <button wire:click="useSavedQuery({{ $sq['id'] }})"
                                 title="Copia nell'editor"
                                 class="rounded p-1 text-primary-500 hover:bg-primary-50 dark:hover:bg-primary-950/20">
-                                <x-heroicon-o-clipboard-document class="h-3.5 w-3.5"/>
+                                <x-heroicon-o-clipboard-document style="width:14px;height:14px" />
                             </button>
                             {{-- Modifica --}}
                             <button wire:click="openEditModal({{ $sq['id'] }})"
                                 title="Modifica"
                                 class="rounded p-1 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <x-heroicon-o-pencil class="h-3.5 w-3.5"/>
+                                <x-heroicon-o-pencil style="width:14px;height:14px" />
                             </button>
                             {{-- Elimina --}}
                             <button wire:click="deleteSavedQuery({{ $sq['id'] }})"
                                 wire:confirm="Eliminare la query '{{ addslashes($sq['name']) }}'?"
                                 title="Elimina"
                                 class="rounded p-1 text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20">
-                                <x-heroicon-o-trash class="h-3.5 w-3.5"/>
+                                <x-heroicon-o-trash style="width:14px;height:14px" />
                             </button>
                         </div>
                     </div>
@@ -396,7 +396,7 @@
         <div class="border-t border-gray-100 p-2 dark:border-gray-800">
             <button wire:click="openSaveModal"
                 class="flex w-full items-center justify-center gap-1.5 rounded-lg border border-dashed border-primary-300 py-2 text-xs font-medium text-primary-600 hover:bg-primary-50 dark:border-primary-700 dark:text-primary-400 dark:hover:bg-primary-950/20">
-                <x-heroicon-o-plus class="h-3.5 w-3.5"/> Salva query corrente
+                <x-heroicon-o-plus style="width:14px;height:14px" /> Salva query corrente
             </button>
         </div>
     </div>
@@ -420,7 +420,7 @@
             </h3>
             <button wire:click="closeSaveModal"
                 class="rounded-lg p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800">
-                <x-heroicon-o-x-mark class="h-4 w-4"/>
+                <x-heroicon-o-x-mark style="width:16px;height:16px" />
             </button>
         </div>
 

@@ -267,6 +267,8 @@ class BrowseTableRecords extends Page implements HasTable
                     ->label('Modifica')
                     ->icon('heroicon-o-pencil-square')
                     ->color('warning')
+                    ->iconButton()
+                    ->tooltip('Modifica')
                     ->form(fn () => $this->buildFormSchema(isEdit: true))
                     ->fillForm(function ($record): array {
                         return $record instanceof \Illuminate\Database\Eloquent\Model
@@ -284,6 +286,8 @@ class BrowseTableRecords extends Page implements HasTable
                     ->label('Elimina')
                     ->icon('heroicon-o-trash')
                     ->color('danger')
+                    ->iconButton()
+                    ->tooltip('Elimina')
                     ->requiresConfirmation()
                     ->modalHeading('Conferma eliminazione')
                     ->modalDescription('Sei sicuro di voler eliminare questo record? L\'operazione è irreversibile.')
