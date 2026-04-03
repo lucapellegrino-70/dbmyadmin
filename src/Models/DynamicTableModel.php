@@ -13,13 +13,13 @@ class DynamicTableModel extends Model
 {
     public $timestamps = false;
 
-    public function __construct(string $tableName = '', array $attributes = [])
+    public function __construct(string $tableName = '', string $primaryKey = 'id', array $attributes = [])
     {
         parent::__construct($attributes);
         if ($tableName !== '') {
             $this->table = $tableName;
         }
-        $this->primaryKey   = 'id';
+        $this->primaryKey   = $primaryKey;
         $this->incrementing = true;
     }
 }
