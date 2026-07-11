@@ -3,14 +3,14 @@
 namespace LucaPellegrino\DbMyAdmin\Drivers;
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use LucaPellegrino\DbMyAdmin\Contracts\DatabaseDriver;
+use LucaPellegrino\DbMyAdmin\Support\ConnectionManager;
 
 class SqliteDriver implements DatabaseDriver
 {
     public function getTables(): Collection
     {
-        $tables = DB::select(
+        $tables = ConnectionManager::connection()->select(
             "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name"
         );
 
@@ -26,8 +26,8 @@ class SqliteDriver implements DatabaseDriver
 
     public function getColumns(string $table): Collection
     {
-        $quoted = DB::connection()->getPdo()->quote($table);
-        $rows   = DB::select("PRAGMA table_info({$quoted})");
+        $quoted = ConnectionManager::connection()->getPdo()->quote($table);
+        $rows   = ConnectionManager::connection()->select("PRAGMA table_info({$quoted})");
 
         return collect($rows)->map(fn ($row) => [
             'name'     => $row->name,
@@ -42,8 +42,8 @@ class SqliteDriver implements DatabaseDriver
 
     public function getForeignKeys(string $table): Collection
     {
-        $quoted = DB::connection()->getPdo()->quote($table);
-        $rows   = DB::select("PRAGMA foreign_key_list({$quoted})");
+        $quoted = ConnectionManager::connection()->getPdo()->quote($table);
+        $rows   = ConnectionManager::connection()->select("PRAGMA foreign_key_list({$quoted})");
 
         return collect($rows)->map(fn ($row) => [
             'column'            => $row->from,
@@ -56,11 +56,11 @@ class SqliteDriver implements DatabaseDriver
 
     public function getIndexes(string $table): Collection
     {
-        $quoted  = DB::connection()->getPdo()->quote($table);
-        $indexes = DB::select("PRAGMA index_list({$quoted})");
+        $quoted  = ConnectionManager::connection()->getPdo()->quote($table);
+        $indexes = ConnectionManager::connection()->select("PRAGMA index_list({$quoted})");
 
         return collect($indexes)->map(function ($idx) {
-            $info = DB::select("PRAGMA index_info({$idx->name})");
+            $info = ConnectionManager::connection()->select("PRAGMA index_info({$idx->name})");
             return [
                 'name'    => $idx->name,
                 'columns' => collect($info)->pluck('name')->toArray(),
@@ -149,7 +149,7 @@ class SqliteDriver implements DatabaseDriver
 
     private function dropColumnSupported(): bool
     {
-        $version = DB::select('SELECT sqlite_version() AS v')[0]->v ?? '0';
+        $version = ConnectionManager::connection()->select('SELECT sqlite_version() AS v')[0]->v ?? '0';
         return version_compare($version, '3.35.0', '>=');
     }
 }

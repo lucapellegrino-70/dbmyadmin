@@ -62,3 +62,31 @@ it('buildCreateDdl generates executable SQL', function () {
     DB::unprepared($ddl);
     expect(Schema::hasTable('articles'))->toBeTrue();
 });
+
+it('reads tables from config(dbmyadmin.connection) instead of the default connection', function () {
+    config([
+        'database.connections.dbmyadmin_secondary' => [
+            'driver'   => 'sqlite',
+            'database' => ':memory:',
+            'prefix'   => '',
+        ],
+    ]);
+
+    Schema::connection('dbmyadmin_secondary')->create('only_in_secondary', function ($table) {
+        $table->id();
+    });
+
+    config(['dbmyadmin.connection' => 'dbmyadmin_secondary']);
+    \LucaPellegrino\DbMyAdmin\Support\ConnectionManager::reset();
+
+    $driver = new SqliteDriver();
+    $tables = $driver->getTables()->pluck('name');
+
+    expect($tables)->toContain('only_in_secondary');
+    expect($tables)->not->toContain('test_users');
+
+    config(['dbmyadmin.connection' => null]);
+    \LucaPellegrino\DbMyAdmin\Support\ConnectionManager::reset();
+    Schema::connection('dbmyadmin_secondary')->dropIfExists('only_in_secondary');
+    DB::purge('dbmyadmin_secondary');
+});
