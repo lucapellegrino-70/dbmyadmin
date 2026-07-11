@@ -3,6 +3,7 @@
 namespace LucaPellegrino\DbMyAdmin\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use LucaPellegrino\DbMyAdmin\Support\ConnectionManager;
 
 /**
  * A concrete Eloquent model whose table name is set at construction time.
@@ -26,5 +27,10 @@ class DynamicTableModel extends Model
     public function getConnectionName()
     {
         return config('dbmyadmin.connection');
+    }
+
+    public function getConnection(): \Illuminate\Database\Connection
+    {
+        return ConnectionManager::connection();
     }
 }

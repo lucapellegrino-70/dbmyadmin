@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Schema;
 use LucaPellegrino\DbMyAdmin\Models\DynamicTableModel;
+use LucaPellegrino\DbMyAdmin\Support\ConnectionManager;
 
 beforeEach(function () {
     Schema::create('articles', function ($t) {
@@ -12,6 +13,7 @@ beforeEach(function () {
 
 afterEach(function () {
     Schema::dropIfExists('articles');
+    ConnectionManager::reset();
 });
 
 it('sets the table name from constructor', function () {

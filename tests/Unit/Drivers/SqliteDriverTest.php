@@ -76,8 +76,8 @@ it('reads tables from config(dbmyadmin.connection) instead of the default connec
         $table->id();
     });
 
-    config(['dbmyadmin.connection' => 'dbmyadmin_secondary']);
     \LucaPellegrino\DbMyAdmin\Support\ConnectionManager::reset();
+    config(['dbmyadmin.connection' => 'dbmyadmin_secondary']);
 
     $driver = new SqliteDriver();
     $tables = $driver->getTables()->pluck('name');

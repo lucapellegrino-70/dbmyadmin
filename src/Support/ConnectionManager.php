@@ -36,9 +36,9 @@ class ConnectionManager
             return;
         }
 
-        static::$activated = true;
-
         $config = app(ActiveConnectionResolver::class)->resolve();
+
+        static::$activated = true;
 
         if ($config === null) {
             return;
@@ -58,5 +58,6 @@ class ConnectionManager
     public static function reset(): void
     {
         static::$activated = false;
+        config(['dbmyadmin.connection' => null]);
     }
 }
