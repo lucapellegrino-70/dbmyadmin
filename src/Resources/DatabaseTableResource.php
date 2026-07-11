@@ -384,6 +384,7 @@ class DatabaseTableResource extends \Filament\Resources\Resource
             ->emptyStateHeading('Nessuna tabella trovata')
             ->emptyStateDescription('Non ci sono tabelle disponibili nel database')
             ->defaultSort('rows', 'desc')
+            ->persistSortInSession()
             ->paginated([5, 10, 25, 50, 'all']);
     }
 
