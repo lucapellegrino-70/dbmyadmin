@@ -7,9 +7,7 @@ use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Support\ServiceProvider;
 use LucaPellegrino\DbMyAdmin\Contracts\ActiveConnectionResolver;
 use LucaPellegrino\DbMyAdmin\Contracts\DatabaseDriver;
-use LucaPellegrino\DbMyAdmin\Drivers\MySqlDriver;
-use LucaPellegrino\DbMyAdmin\Drivers\PostgresDriver;
-use LucaPellegrino\DbMyAdmin\Drivers\SqliteDriver;
+use LucaPellegrino\DbMyAdmin\Support\ConnectionManager;
 use LucaPellegrino\DbMyAdmin\Support\NullConnectionResolver;
 
 class DbMyAdminServiceProvider extends ServiceProvider
@@ -18,22 +16,23 @@ class DbMyAdminServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/dbmyadmin.php', 'dbmyadmin');
 
-        $this->app->singleton(ActiveConnectionResolver::class, NullConnectionResolver::class);
+        $this->app->bind(ActiveConnectionResolver::class, NullConnectionResolver::class);
 
         $this->app->singleton(DatabaseDriver::class, function ($app) {
             $configured = config('dbmyadmin.driver', 'auto');
             $driver = $configured === 'auto'
-                ? $app['db']->connection()->getDriverName()
+                ? ConnectionManager::connection()->getDriverName()
                 : $configured;
 
-            return match ($driver) {
-                'mysql', 'mariadb' => new MySqlDriver(),
-                'pgsql'            => new PostgresDriver(),
-                'sqlite'           => new SqliteDriver(),
-                default            => throw new \RuntimeException(
-                    "DbMyAdmin: unsupported database driver [{$driver}]. Supported: mysql, pgsql, sqlite."
-                ),
-            };
+            $map = config('dbmyadmin.drivers', []);
+
+            if (! isset($map[$driver])) {
+                throw new \RuntimeException(
+                    "DbMyAdmin: unsupported database driver [{$driver}]. Supported: " . implode(', ', array_keys($map)) . "."
+                );
+            }
+
+            return $app->make($map[$driver]);
         });
     }
 
