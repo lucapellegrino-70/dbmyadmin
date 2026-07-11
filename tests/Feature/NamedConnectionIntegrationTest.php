@@ -28,6 +28,7 @@ afterEach(function () {
     DatabaseTable::clearCache();
     config(['dbmyadmin.connection' => null]);
     DB::purge('dbmyadmin_e2e_secondary');
+    DB::purge('dbmyadmin_active');
     @unlink($this->secondaryDbPath);
 });
 
