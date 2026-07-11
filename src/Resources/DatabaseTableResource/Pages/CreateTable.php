@@ -4,10 +4,10 @@ namespace LucaPellegrino\DbMyAdmin\Resources\DatabaseTableResource\Pages;
 
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\Page;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use LucaPellegrino\DbMyAdmin\Contracts\DatabaseDriver;
 use LucaPellegrino\DbMyAdmin\Resources\DatabaseTableResource;
+use LucaPellegrino\DbMyAdmin\Support\ConnectionManager;
 
 class CreateTable extends Page
 {
@@ -379,7 +379,7 @@ class CreateTable extends Page
         }
 
         try {
-            DB::unprepared($this->generatedDdl);
+            ConnectionManager::connection()->unprepared($this->generatedDdl);
 
             Log::info('Tabella creata', [
                 'table' => $this->tableName,
