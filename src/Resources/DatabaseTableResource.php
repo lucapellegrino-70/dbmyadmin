@@ -181,7 +181,12 @@ class DatabaseTableResource extends \Filament\Resources\Resource
                     ->tooltip('Svuota tabella')
                     ->requiresConfirmation()
                     ->modalHeading('Conferma Svuotamento Tabella')
-                    ->modalDescription(fn ($record) => "Sei sicuro di voler svuotare la tabella '{$record->name}'? Questa operazione eliminerà tutti i dati in modo permanente.")
+                    ->modalDescription(function ($record) {
+                        $label = app(\LucaPellegrino\DbMyAdmin\Contracts\ActiveConnectionLabelProvider::class)->label();
+                        $suffix = $label ? " sulla connessione '{$label}'" : '';
+
+                        return "Sei sicuro di voler svuotare la tabella '{$record->name}'{$suffix}? Questa operazione eliminerà tutti i dati in modo permanente.";
+                    })
                     ->modalSubmitActionLabel('Sì, svuota tabella')
                     ->action(function ($record) {
                         $tableName = $record->name;
@@ -223,7 +228,12 @@ class DatabaseTableResource extends \Filament\Resources\Resource
                     ->tooltip('Svuota (disabilita FK)')
                     ->requiresConfirmation()
                     ->modalHeading('Conferma Svuotamento con Disabilitazione FK')
-                    ->modalDescription(fn ($record) => "Sei sicuro di voler svuotare la tabella '{$record->name}' disabilitando temporaneamente i controlli sulle chiavi esterne? Questa operazione eliminerà tutti i dati in modo permanente.")
+                    ->modalDescription(function ($record) {
+                        $label = app(\LucaPellegrino\DbMyAdmin\Contracts\ActiveConnectionLabelProvider::class)->label();
+                        $suffix = $label ? " sulla connessione '{$label}'" : '';
+
+                        return "Sei sicuro di voler svuotare la tabella '{$record->name}'{$suffix} disabilitando temporaneamente i controlli sulle chiavi esterne? Questa operazione eliminerà tutti i dati in modo permanente.";
+                    })
                     ->modalSubmitActionLabel('Sì, svuota con FK disabilitate')
                     ->action(function ($record) {
                         $tableName = $record->name;

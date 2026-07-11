@@ -24,3 +24,10 @@ it('throws a clear error for an unmapped driver', function () {
     expect(fn () => app()->forgetInstance(DatabaseDriver::class) ?? app(DatabaseDriver::class))
         ->toThrow(RuntimeException::class, 'unsupported database driver [oracle]');
 });
+
+it('binds NullConnectionLabelProvider as the default ActiveConnectionLabelProvider', function () {
+    expect(app(\LucaPellegrino\DbMyAdmin\Contracts\ActiveConnectionLabelProvider::class))
+        ->toBeInstanceOf(\LucaPellegrino\DbMyAdmin\Support\NullConnectionLabelProvider::class);
+
+    expect(app(\LucaPellegrino\DbMyAdmin\Contracts\ActiveConnectionLabelProvider::class)->label())->toBeNull();
+});
