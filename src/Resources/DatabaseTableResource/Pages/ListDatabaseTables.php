@@ -144,9 +144,18 @@ class ListDatabaseTables extends ListRecords
                 if (is_string($column)) {
                     $column         = str_replace(['`', 'database_tables.'], '', $column);
                     $this->orders[] = ['column' => $column, 'direction' => $direction];
-                    $this->collection = $this->collection
-                        ->sortBy($column, SORT_REGULAR, $direction === 'desc')
-                        ->values();
+
+                    // Filament applies the user-clicked sort first, then re-applies the
+                    // resource's defaultSort as a tie-breaker (mimicking SQL's
+                    // ORDER BY col1, col2). A plain sortBy() per call would overwrite
+                    // the previous order instead of stacking it, so sort by all
+                    // accumulated criteria at once, primary key first.
+                    $criteria = array_map(
+                        fn ($order) => [$order['column'], $order['direction']],
+                        $this->orders
+                    );
+
+                    $this->collection = $this->collection->sortBy($criteria)->values();
                 }
 
                 return $this;
