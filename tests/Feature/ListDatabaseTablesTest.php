@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use LucaPellegrino\DbMyAdmin\Models\DatabaseTable;
 use LucaPellegrino\DbMyAdmin\Resources\DatabaseTableResource\Pages\ListDatabaseTables;
+use LucaPellegrino\DbMyAdmin\Support\ConnectionManager;
 
 beforeEach(function () {
     Schema::create('zebra', fn ($t) => $t->id());
@@ -26,6 +27,7 @@ afterEach(function () {
     Schema::dropIfExists('mango');
 
     DatabaseTable::clearCache();
+    ConnectionManager::reset();
 });
 
 function getListDatabaseTablesQuery(): Illuminate\Database\Eloquent\Builder
