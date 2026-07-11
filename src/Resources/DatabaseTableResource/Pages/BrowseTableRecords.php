@@ -11,12 +11,11 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Schema;
 use LucaPellegrino\DbMyAdmin\Contracts\DatabaseDriver;
 use LucaPellegrino\DbMyAdmin\Models\DynamicTableModel;
 use LucaPellegrino\DbMyAdmin\Resources\DatabaseTableResource;
+use LucaPellegrino\DbMyAdmin\Support\ConnectionManager;
 
 class BrowseTableRecords extends Page implements HasTable
 {
@@ -76,7 +75,7 @@ class BrowseTableRecords extends Page implements HasTable
 
     protected function tableExists(): bool
     {
-        return Schema::hasTable($this->tableName);
+        return ConnectionManager::schema()->hasTable($this->tableName);
     }
 
     /**
@@ -85,7 +84,7 @@ class BrowseTableRecords extends Page implements HasTable
      */
     protected function resolveTableColumns(): array
     {
-        if (! Schema::hasTable($this->tableName)) {
+        if (! ConnectionManager::schema()->hasTable($this->tableName)) {
             return [];
         }
 
@@ -227,7 +226,7 @@ class BrowseTableRecords extends Page implements HasTable
         $sep          = $config['separator'] ?? ' – ';
         $selectCols   = array_unique(array_merge([$relKey], $labelColumns));
 
-        $rows    = DB::table($relTable)->select($selectCols)->orderBy($labelColumns[0])->get();
+        $rows    = ConnectionManager::connection()->table($relTable)->select($selectCols)->orderBy($labelColumns[0])->get();
         $options = [];
 
         foreach ($rows as $row) {
@@ -468,14 +467,14 @@ class BrowseTableRecords extends Page implements HasTable
     protected function performCreate(array $data): void
     {
         try {
-            if (Schema::hasColumn($this->tableName, 'created_at') && ! isset($data['created_at'])) {
+            if (ConnectionManager::schema()->hasColumn($this->tableName, 'created_at') && ! isset($data['created_at'])) {
                 $data['created_at'] = now();
             }
-            if (Schema::hasColumn($this->tableName, 'updated_at') && ! isset($data['updated_at'])) {
+            if (ConnectionManager::schema()->hasColumn($this->tableName, 'updated_at') && ! isset($data['updated_at'])) {
                 $data['updated_at'] = now();
             }
 
-            DB::table($this->tableName)->insert($data);
+            ConnectionManager::connection()->table($this->tableName)->insert($data);
 
             Log::info('Record creato', ['table' => $this->tableName, 'user' => auth()->user()?->email ?? 'system']);
             Notification::make()->title('Record creato con successo')->success()->send();
@@ -490,11 +489,11 @@ class BrowseTableRecords extends Page implements HasTable
         $pk = $this->getPrimaryKey();
 
         try {
-            if (Schema::hasColumn($this->tableName, 'updated_at')) {
+            if (ConnectionManager::schema()->hasColumn($this->tableName, 'updated_at')) {
                 $data['updated_at'] = now();
             }
 
-            DB::table($this->tableName)->where($pk, $original[$pk])->update($data);
+            ConnectionManager::connection()->table($this->tableName)->where($pk, $original[$pk])->update($data);
 
             Log::info('Record aggiornato', [
                 'table' => $this->tableName,
@@ -513,7 +512,7 @@ class BrowseTableRecords extends Page implements HasTable
         $pk = $this->getPrimaryKey();
 
         try {
-            DB::table($this->tableName)->where($pk, $record[$pk])->delete();
+            ConnectionManager::connection()->table($this->tableName)->where($pk, $record[$pk])->delete();
 
             Log::info('Record eliminato', [
                 'table' => $this->tableName,
