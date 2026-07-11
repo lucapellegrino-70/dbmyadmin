@@ -9,12 +9,12 @@ use Filament\Notifications\Notification;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use LucaPellegrino\DbMyAdmin\Contracts\DatabaseDriver;
 use LucaPellegrino\DbMyAdmin\DbMyAdminPlugin;
 use LucaPellegrino\DbMyAdmin\Models\DatabaseTable;
 use LucaPellegrino\DbMyAdmin\Resources\DatabaseTableResource\Pages;
+use LucaPellegrino\DbMyAdmin\Support\ConnectionManager;
 
 class DatabaseTableResource extends \Filament\Resources\Resource
 {
@@ -80,27 +80,27 @@ class DatabaseTableResource extends \Filament\Resources\Resource
     protected static function rollbackFilamentTransaction(): void
     {
         try {
-            DB::rollBack();
+            ConnectionManager::connection()->rollBack();
         } catch (\Throwable) {
         }
     }
 
     protected static function disableForeignKeyChecks(): void
     {
-        match (DB::getDriverName()) {
-            'mysql', 'mariadb' => DB::unprepared('SET FOREIGN_KEY_CHECKS=0'),
-            'pgsql'            => DB::unprepared('SET session_replication_role = replica'),
-            'sqlite'           => DB::unprepared('PRAGMA foreign_keys = OFF'),
+        match (ConnectionManager::connection()->getDriverName()) {
+            'mysql', 'mariadb' => ConnectionManager::connection()->unprepared('SET FOREIGN_KEY_CHECKS=0'),
+            'pgsql'            => ConnectionManager::connection()->unprepared('SET session_replication_role = replica'),
+            'sqlite'           => ConnectionManager::connection()->unprepared('PRAGMA foreign_keys = OFF'),
             default            => null,
         };
     }
 
     protected static function enableForeignKeyChecks(): void
     {
-        match (DB::getDriverName()) {
-            'mysql', 'mariadb' => DB::unprepared('SET FOREIGN_KEY_CHECKS=1'),
-            'pgsql'            => DB::unprepared('SET session_replication_role = DEFAULT'),
-            'sqlite'           => DB::unprepared('PRAGMA foreign_keys = ON'),
+        match (ConnectionManager::connection()->getDriverName()) {
+            'mysql', 'mariadb' => ConnectionManager::connection()->unprepared('SET FOREIGN_KEY_CHECKS=1'),
+            'pgsql'            => ConnectionManager::connection()->unprepared('SET session_replication_role = DEFAULT'),
+            'sqlite'           => ConnectionManager::connection()->unprepared('PRAGMA foreign_keys = ON'),
             default            => null,
         };
     }
@@ -188,7 +188,7 @@ class DatabaseTableResource extends \Filament\Resources\Resource
 
                         try {
                             static::rollbackFilamentTransaction();
-                            DB::table($tableName)->truncate();
+                            ConnectionManager::connection()->table($tableName)->truncate();
                             DatabaseTable::clearCache();
 
                             Log::info('Tabella svuotata', [
@@ -231,7 +231,7 @@ class DatabaseTableResource extends \Filament\Resources\Resource
                         try {
                             static::rollbackFilamentTransaction();
                             static::disableForeignKeyChecks();
-                            DB::table($tableName)->truncate();
+                            ConnectionManager::connection()->table($tableName)->truncate();
                             static::enableForeignKeyChecks();
                             DatabaseTable::clearCache();
 
@@ -281,7 +281,7 @@ class DatabaseTableResource extends \Filament\Resources\Resource
 
                         foreach ($records as $record) {
                             try {
-                                DB::table($record->name)->truncate();
+                                ConnectionManager::connection()->table($record->name)->truncate();
                                 $success++;
 
                                 Log::info('Tabella svuotata (bulk)', [
@@ -325,7 +325,7 @@ class DatabaseTableResource extends \Filament\Resources\Resource
 
                             foreach ($records as $record) {
                                 try {
-                                    DB::table($record->name)->truncate();
+                                    ConnectionManager::connection()->table($record->name)->truncate();
                                     $success++;
 
                                     Log::info('Tabella svuotata (bulk con FK disabilitate)', [
