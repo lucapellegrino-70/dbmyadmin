@@ -3,14 +3,14 @@
 namespace LucaPellegrino\DbMyAdmin\Drivers;
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use LucaPellegrino\DbMyAdmin\Contracts\DatabaseDriver;
+use LucaPellegrino\DbMyAdmin\Support\ConnectionManager;
 
 class PostgresDriver implements DatabaseDriver
 {
     public function getTables(): Collection
     {
-        $rows = DB::select("
+        $rows = ConnectionManager::connection()->select("
             SELECT
                 t.table_name                                 AS name,
                 s.n_live_tup                                 AS rows,
@@ -31,7 +31,7 @@ class PostgresDriver implements DatabaseDriver
 
     public function getColumns(string $table): Collection
     {
-        $rows = DB::select("
+        $rows = ConnectionManager::connection()->select("
             SELECT
                 c.column_name                               AS name,
                 c.udt_name                                  AS type,
@@ -66,7 +66,7 @@ class PostgresDriver implements DatabaseDriver
 
     public function getForeignKeys(string $table): Collection
     {
-        $rows = DB::select("
+        $rows = ConnectionManager::connection()->select("
             SELECT
                 kcu.column_name   AS column,
                 ccu.table_name    AS referenced_table,
@@ -90,7 +90,7 @@ class PostgresDriver implements DatabaseDriver
 
     public function getIndexes(string $table): Collection
     {
-        $rows = DB::select("
+        $rows = ConnectionManager::connection()->select("
             SELECT
                 i.relname                                   AS name,
                 array_to_string(array_agg(a.attname), ',') AS columns,
