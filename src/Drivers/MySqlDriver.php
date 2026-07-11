@@ -3,15 +3,15 @@
 namespace LucaPellegrino\DbMyAdmin\Drivers;
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use LucaPellegrino\DbMyAdmin\Contracts\DatabaseDriver;
+use LucaPellegrino\DbMyAdmin\Support\ConnectionManager;
 
 class MySqlDriver implements DatabaseDriver
 {
     public function getTables(): Collection
     {
-        $dbName = DB::connection()->getDatabaseName();
-        $rows   = DB::select("
+        $dbName = ConnectionManager::connection()->getDatabaseName();
+        $rows   = ConnectionManager::connection()->select("
             SELECT
                 TABLE_NAME      AS `name`,
                 TABLE_ROWS      AS `rows`,
@@ -29,8 +29,8 @@ class MySqlDriver implements DatabaseDriver
 
     public function getColumns(string $table): Collection
     {
-        $dbName = DB::connection()->getDatabaseName();
-        $rows   = DB::select("
+        $dbName = ConnectionManager::connection()->getDatabaseName();
+        $rows   = ConnectionManager::connection()->select("
             SELECT
                 COLUMN_NAME              AS `name`,
                 DATA_TYPE                AS `type`,
@@ -54,8 +54,8 @@ class MySqlDriver implements DatabaseDriver
 
     public function getForeignKeys(string $table): Collection
     {
-        $dbName = DB::connection()->getDatabaseName();
-        $rows   = DB::select("
+        $dbName = ConnectionManager::connection()->getDatabaseName();
+        $rows   = ConnectionManager::connection()->select("
             SELECT
                 kcu.COLUMN_NAME            AS `column`,
                 kcu.REFERENCED_TABLE_NAME  AS `referenced_table`,
@@ -75,7 +75,7 @@ class MySqlDriver implements DatabaseDriver
 
     public function getIndexes(string $table): Collection
     {
-        $rows = DB::select("SHOW INDEX FROM `{$table}`");
+        $rows = ConnectionManager::connection()->select("SHOW INDEX FROM `{$table}`");
 
         return collect($rows)
             ->groupBy('Key_name')
