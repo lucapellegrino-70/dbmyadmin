@@ -5,16 +5,20 @@ namespace LucaPellegrino\DbMyAdmin;
 use Filament\Support\Assets\Css;
 use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Support\ServiceProvider;
+use LucaPellegrino\DbMyAdmin\Contracts\ActiveConnectionResolver;
 use LucaPellegrino\DbMyAdmin\Contracts\DatabaseDriver;
 use LucaPellegrino\DbMyAdmin\Drivers\MySqlDriver;
 use LucaPellegrino\DbMyAdmin\Drivers\PostgresDriver;
 use LucaPellegrino\DbMyAdmin\Drivers\SqliteDriver;
+use LucaPellegrino\DbMyAdmin\Support\NullConnectionResolver;
 
 class DbMyAdminServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/dbmyadmin.php', 'dbmyadmin');
+
+        $this->app->singleton(ActiveConnectionResolver::class, NullConnectionResolver::class);
 
         $this->app->singleton(DatabaseDriver::class, function ($app) {
             $configured = config('dbmyadmin.driver', 'auto');
