@@ -22,4 +22,9 @@ class DynamicTableModel extends Model
         $this->primaryKey   = $primaryKey;
         $this->incrementing = true;
     }
+
+    public function getConnectionName()
+    {
+        return config('dbmyadmin.connection');
+    }
 }

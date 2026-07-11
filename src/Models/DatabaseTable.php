@@ -4,12 +4,11 @@ namespace LucaPellegrino\DbMyAdmin\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use LucaPellegrino\DbMyAdmin\Contracts\DatabaseDriver;
+use LucaPellegrino\DbMyAdmin\Support\ConnectionManager;
 
 class DatabaseTable extends Model
 {
-    protected $connection   = null;
     protected $primaryKey   = 'name';
     protected $keyType      = 'string';
     public    $incrementing = false;
@@ -74,8 +73,13 @@ class DatabaseTable extends Model
     public function delete(): ?bool { return true; }
     public function refresh(): static { return $this; }
 
+    public function getConnectionName()
+    {
+        return config('dbmyadmin.connection');
+    }
+
     public function getConnection(): \Illuminate\Database\Connection
     {
-        return DB::connection();
+        return ConnectionManager::connection();
     }
 }

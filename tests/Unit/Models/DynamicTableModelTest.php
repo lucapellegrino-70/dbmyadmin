@@ -24,3 +24,13 @@ it('can query the dynamic table', function () {
     $count = $model->newQuery()->count();
     expect($count)->toBe(0);
 });
+
+it('uses config(dbmyadmin.connection) as the connection name', function () {
+    config(['dbmyadmin.connection' => 'dbmyadmin_active']);
+
+    $model = new DynamicTableModel('test_users');
+
+    expect($model->getConnectionName())->toBe('dbmyadmin_active');
+
+    config(['dbmyadmin.connection' => null]);
+});
