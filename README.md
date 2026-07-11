@@ -94,6 +94,13 @@ return [
 ];
 ```
 
+### Extensibility (`drivers` and `connection`)
+
+Two config keys exist purely as extension points for third-party add-ons and aren't meant to be edited by hand in a normal installation:
+
+- `drivers` maps a driver name (as reported by the active connection, or set explicitly via `driver`) to the `DatabaseDriver` class that handles it. An extension package can merge additional entries into this array from its own service provider (e.g. to add SQL Server support) without forking this package.
+- `connection` is the name of the Laravel database connection DbMyAdmin currently targets. It's `null` by default, meaning "use this application's default connection" — the only mode this package supports on its own. It's managed at runtime by `LucaPellegrino\DbMyAdmin\Support\ConnectionManager` and should not be set directly in config files.
+
 ### Excluding additional tables
 
 Add table names to `excluded_tables` to hide them from the interface:
