@@ -4,11 +4,10 @@ namespace LucaPellegrino\DbMyAdmin\Resources\DatabaseTableResource\Pages;
 
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\Page;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Schema;
 use LucaPellegrino\DbMyAdmin\Contracts\DatabaseDriver;
 use LucaPellegrino\DbMyAdmin\Resources\DatabaseTableResource;
+use LucaPellegrino\DbMyAdmin\Support\ConnectionManager;
 
 class AlterTable extends Page
 {
@@ -30,7 +29,7 @@ class AlterTable extends Page
     {
         $this->tableName = $record;
 
-        abort_unless(Schema::hasTable($this->tableName), 404);
+        abort_unless(ConnectionManager::schema()->hasTable($this->tableName), 404);
 
         $this->loadExistingColumns();
     }
@@ -253,7 +252,7 @@ class AlterTable extends Page
         }
 
         try {
-            DB::unprepared($this->generatedDdl);
+            ConnectionManager::connection()->unprepared($this->generatedDdl);
 
             Log::info('Tabella modificata', [
                 'table' => $this->tableName,
