@@ -4,11 +4,11 @@ namespace LucaPellegrino\DbMyAdmin\Resources\DatabaseTableResource\Pages;
 
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\Page;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use LucaPellegrino\DbMyAdmin\Contracts\DatabaseDriver;
 use LucaPellegrino\DbMyAdmin\Models\SavedQuery;
 use LucaPellegrino\DbMyAdmin\Resources\DatabaseTableResource;
+use LucaPellegrino\DbMyAdmin\Support\ConnectionManager;
 
 class SqlQueryRunner extends Page
 {
@@ -94,7 +94,7 @@ class SqlQueryRunner extends Page
                 str_starts_with($upperSql, 'DESCRIBE') ||
                 str_starts_with($upperSql, 'EXPLAIN')
             ) {
-                $rows = DB::select($sql);
+                $rows = ConnectionManager::connection()->select($sql);
 
                 $this->execTimeMs = round((microtime(true) - $start) * 1000, 2);
                 $this->totalRows  = count($rows);
@@ -109,7 +109,7 @@ class SqlQueryRunner extends Page
                 }
                 $this->hasResults = true;
             } else {
-                $affected = DB::affectingStatement($sql);
+                $affected = ConnectionManager::connection()->affectingStatement($sql);
 
                 $this->execTimeMs = round((microtime(true) - $start) * 1000, 2);
                 $this->totalRows  = $affected;
